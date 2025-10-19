@@ -16,11 +16,11 @@ spec:
     spec:
       containers:
       - name: flask-metrics
-        image: iabdraheem/flask-metrics:latest
+        image: iabdraheem/flask-metrics:1.0
         ports:
         - containerPort: 80
         resources:
-          request:
+          requests:
             cpu: 100m
             memory: 128Mi
           limits:

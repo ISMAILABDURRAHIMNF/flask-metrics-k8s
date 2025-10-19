@@ -1,4 +1,4 @@
-apiVersion: keda/v1alpha1
+apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: flask-metrics-keda
@@ -7,13 +7,17 @@ spec:
     name: flask-metrics-deployment
   minReplicaCount: 2
   maxReplicaCount: 5
+  pollingInterval: 15
   cooldownPeriod: 30
-  poolingInterval: 15
-  trigger:
-    - type: Prometheus
+  triggers:
+    - type: cpu
+      metricType: Utilization
       metadata:
-        serverAddress: http://my-Prometheus-community.default.svc.cluster.local
-        metricsName: http_requests_total
-        treshold: "50"
-        query: |
-          sum(avg(http_requests_total[1])) by (pod)
+        value: "70"
+    - type: prometheus
+      metadata:
+        serverAddress: http://prometheus-operated.monitoring.svc.cluster.local:9090
+        metricName: http_requests_total
+        threshold: "50"
+        query: avg(rate(http_requests_total[1m])) * 60
+
