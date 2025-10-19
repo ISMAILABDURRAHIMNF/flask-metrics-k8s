@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: flask-metrics
-        image: iabdraheem/flask-metrics:1.0
+        image: iabdraheem/flask-metrics:50.0
         ports:
         - containerPort: 80
         resources:
